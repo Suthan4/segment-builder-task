@@ -85,7 +85,7 @@ export default function SegmentBuilder() {
     try {
       const webhookUrl =
         "https://webhook.site/92384eff-b9a0-431f-b09f-223e5b403885";
-      const response = await fetch(webhookUrl, {
+      await fetch(webhookUrl, {
         method: "POST",
         mode: "no-cors",
         headers: {
