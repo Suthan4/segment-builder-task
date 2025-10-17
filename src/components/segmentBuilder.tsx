@@ -1,5 +1,5 @@
-import  { useState } from 'react';
-import { X, Plus } from 'lucide-react';
+import { useState } from "react";
+import { X, Plus } from "lucide-react";
 
 interface SchemaOption {
   label: string;
@@ -17,22 +17,22 @@ interface SegmentData {
 }
 
 const schemaOptions: SchemaOption[] = [
-  { label: 'First Name', value: 'first_name' },
-  { label: 'Last Name', value: 'last_name' },
-  { label: 'Gender', value: 'gender' },
-  { label: 'Age', value: 'age' },
-  { label: 'Account Name', value: 'account_name' },
-  { label: 'City', value: 'city' },
-  { label: 'State', value: 'state' },
+  { label: "First Name", value: "first_name" },
+  { label: "Last Name", value: "last_name" },
+  { label: "Gender", value: "gender" },
+  { label: "Age", value: "age" },
+  { label: "Account Name", value: "account_name" },
+  { label: "City", value: "city" },
+  { label: "State", value: "state" },
 ];
 
 export default function SegmentBuilder() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [segmentName, setSegmentName] = useState('');
-  const [dropdownValue, setDropdownValue] = useState('');
+  const [segmentName, setSegmentName] = useState("");
+  const [dropdownValue, setDropdownValue] = useState("");
   const [selectedSchemas, setSelectedSchemas] = useState<SelectedSchema[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const getAvailableOptions = (): SchemaOption[] => {
     const selectedValues = selectedSchemas.map((s) => s.value);
@@ -42,8 +42,11 @@ export default function SegmentBuilder() {
   const handleAddSchema = () => {
     if (dropdownValue) {
       const newId = Date.now().toString();
-      setSelectedSchemas([...selectedSchemas, { id: newId, value: dropdownValue }]);
-      setDropdownValue('');
+      setSelectedSchemas([
+        ...selectedSchemas,
+        { id: newId, value: dropdownValue },
+      ]);
+      setDropdownValue("");
     }
   };
 
@@ -59,18 +62,18 @@ export default function SegmentBuilder() {
 
   const handleSaveSegment = async () => {
     if (!segmentName.trim()) {
-      setMessage('Please enter a segment name');
+      setMessage("Please enter a segment name");
       return;
     }
 
     if (selectedSchemas.length === 0) {
-      setMessage('Please add at least one schema');
+      setMessage("Please add at least one schema");
       return;
     }
 
     const schemaArray = selectedSchemas.map((schema) => {
       const option = schemaOptions.find((opt) => opt.value === schema.value);
-      return { [schema.value]: option?.label || '' };
+      return { [schema.value]: option?.label || "" };
     });
 
     const payload: SegmentData = {
@@ -83,29 +86,24 @@ export default function SegmentBuilder() {
       const webhookUrl =
         "https://webhook.site/92384eff-b9a0-431f-b09f-223e5b403885";
       const response = await fetch(webhookUrl, {
-        method: 'POST',
-        mode:"no-cors",
+        method: "POST",
+        mode: "no-cors",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
-
-      if (response.ok) {
-        setMessage('Segment saved successfully!');
-        // Reset form
-        setSegmentName('');
-        setSelectedSchemas([]);
-        setDropdownValue('');
-        setTimeout(() => {
-          setIsModalOpen(false);
-          setMessage('');
-        }, 1500);
-      } else {
-        setMessage('Failed to save segment');
-      }
+      setMessage("Segment saved successfully!");
+      // Reset form
+      setSegmentName("");
+      setSelectedSchemas([]);
+      setDropdownValue("");
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setMessage("");
+      }, 1500);
     } catch (error) {
-      setMessage('Error sending data to server');
+      setMessage("Error sending data to server");
     } finally {
       setIsLoading(false);
     }
@@ -113,17 +111,19 @@ export default function SegmentBuilder() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSegmentName('');
+    setSegmentName("");
     setSelectedSchemas([]);
-    setDropdownValue('');
-    setMessage('');
+    setDropdownValue("");
+    setMessage("");
   };
 
   return (
     <>
       <div className="max-w-md mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">Segment Builder</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            Segment Builder
+          </h1>
           <button
             onClick={() => setIsModalOpen(true)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200"
@@ -137,7 +137,9 @@ export default function SegmentBuilder() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
-              <h2 className="text-xl font-bold text-gray-800">Create Segment</h2>
+              <h2 className="text-xl font-bold text-gray-800">
+                Create Segment
+              </h2>
               <button
                 onClick={handleCloseModal}
                 className="text-gray-500 hover:text-gray-700 transition"
@@ -192,7 +194,9 @@ export default function SegmentBuilder() {
 
               {/* Selected Schemas Blue Box */}
               <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                <p className="text-sm font-semibold text-gray-700 mb-3">Selected Schemas:</p>
+                <p className="text-sm font-semibold text-gray-700 mb-3">
+                  Selected Schemas:
+                </p>
                 {selectedSchemas.length === 0 ? (
                   <p className="text-gray-400 text-sm">No schemas added yet</p>
                 ) : (
@@ -204,11 +208,17 @@ export default function SegmentBuilder() {
                       >
                         <select
                           value={schema.value}
-                          onChange={(e) => handleSchemaChange(schema.id, e.target.value)}
+                          onChange={(e) =>
+                            handleSchemaChange(schema.id, e.target.value)
+                          }
                           className="flex-1 px-3 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                         >
                           <option value={schema.value}>
-                            {schemaOptions.find((opt) => opt.value === schema.value)?.label}
+                            {
+                              schemaOptions.find(
+                                (opt) => opt.value === schema.value
+                              )?.label
+                            }
                           </option>
                           {getAvailableOptions().map((option) => (
                             <option key={option.value} value={option.value}>
@@ -232,9 +242,9 @@ export default function SegmentBuilder() {
               {message && (
                 <div
                   className={`p-3 rounded-lg text-sm font-medium ${
-                    message.includes('success')
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-red-100 text-red-800'
+                    message.includes("success")
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
                   }`}
                 >
                   {message}
@@ -254,7 +264,7 @@ export default function SegmentBuilder() {
                   disabled={isLoading}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
                 >
-                  {isLoading ? 'Saving...' : 'Save Segment'}
+                  {isLoading ? "Saving..." : "Save Segment"}
                 </button>
               </div>
             </div>
